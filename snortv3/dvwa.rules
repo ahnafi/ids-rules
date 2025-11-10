@@ -89,48 +89,46 @@ alert tcp any any -> any any (msg:"SQL Injection - Mathematical operation"; pcre
 
 # CSRF rules
 
+alert tcp any any -> any any (msg:"xss script"; content:"%3C"; sid:10000067;)
+
 alert tcp any any -> any any (
-    msg:"CSRF - Missing CSRF Token in POST request";
-    flow:to_server, established;
-    content:"POST", nocase;
-    http_method;
-    pcre:"/Content-Type:\s*application\/x-www-form-urlencoded/i";
-    pcre:!"/csrf_token=/i";
-    sid:1000100;
+    msg:"XSS - script tag 1 detected";
+    flow:to_server;
+    content:"script", nocase;
+    sid: 1000078;
 )
 
 alert tcp any any -> any any (
-    msg:"CSRF - Missing Referer Header in state-changing request";
-    flow:to_server, established;
-    content:"POST", nocase;
-    http_method;
-    pcre:!"/Referer:/i";
-    sid:1000101;
+    msg:"XSS - java tag 1 detected";
+    flow:to_server;
+    content:"java script", nocase;
+    sid: 1000079;
 )
 
 alert tcp any any -> any any (
-    msg:"CSRF - Suspicious Origin Header in request";
-    flow:to_server, established;
-    content:"Origin:", nocase;
-    http_header;
-    pcre:"/Origin:\s*(http|https):\/\/(www\.)?example\.com/i";
-    sid:1000102;
+    msg:"XSS - src tag 1 detected";
+    flow:to_server;
+    content:"src=", nocase;
+    sid: 1000080;
 )
 
 alert tcp any any -> any any (
-    msg:"CSRF - GET request with state-changing parameters";
-    flow:to_server, established;
-    content:"GET", nocase;
-    http_method;
-    pcre:"/(\?|&)(action|cmd|submit|update|delete)=/i";
-    sid:1000103;
+    msg:"XSS - IMG tag 1 detected";
+    flow:to_server;
+    content:"IMG", nocase;
+    sid: 1000081;
 )
 
 alert tcp any any -> any any (
-    msg:"CSRF - Missing CSRF Token in AJAX request";
-    flow:to_server, established;
-    content:"X-Requested-With: XMLHttpRequest", nocase;
-    http_header;
-    pcre:!"/csrf_token=/i";
-    sid:1000104;
+    msg:"XSS - Alert tag 1 detected";
+    flow:to_server;
+    content:"alert", nocase;
+    sid: 1000082;
+)
+
+alert tcp any any -> any any (
+    msg:"XSS - onerror tag 1 detected";
+    flow:to_server;
+    content:"oneerror", nocase;
+    sid: 1000083;
 )
