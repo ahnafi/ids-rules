@@ -6,7 +6,7 @@ As non root
 git clone {this repo}
 cd {this repo}
 sudo cp snort.lua /usr/local/etc/snort/
-sudo cp snortv3/csrf.lua snortv3/sqlinjection.rules snortv3/xss.rules  /usr/local/etc/snort/rules/
+sudo cp snortv3/csrf.rules snortv3/sqlinjection.rules snortv3/xss.rules  /usr/local/etc/snort/rules/
 ```
 
 ## Running
